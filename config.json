@@ -1,0 +1,109 @@
+{
+  // List of interfaces used to connect to Meshtastic
+  "interfaces": [
+    {
+      // Interface name used in this file
+      "name": "if0",
+
+      // Interface driver name a.k.a. connection method. See below:
+      "driver": "tcp",
+
+      /* Bluetooth connection
+      "driver": "ble",
+      // Optional device address
+      "address": null,
+      */
+
+      /* Serial port connection
+      "driver": "serial",
+      // Optional device path
+      "device_path": null,
+      */
+
+      /* TCP connection
+      "driver": "tcp",
+      "hostname": "127.0.0.1",
+      "port": 4403,
+      */
+
+      "debug": true,
+      // Array of channels handled by the bot
+      "channels": [
+        {
+          "name": "MediumFast",
+          /* Optional channel key if you want the bot to
+             configure it when it does not currently exist.
+           */
+          "psk": "AQ=="
+        }
+      ]
+    },
+  ],
+
+  // List of bots along with their configuration. Uncomment the ones you want to use
+  "bots": [
+    {
+      // Own bot name - used to store session data
+      "name": "discord_bot",
+      // Bot type
+      "type": "discord",
+      // List of interfaces on which the bot operates
+      "interfaces": [ "if0" ],
+
+      // Bot's configuration
+      "config": {
+        "token": "PASTE_DISCORD_BOT_TOKEN_HERE",
+        /* Whether the bot should use webhooks to send messages.
+           Enabling this option allows Discord to display dynamic usernames,
+           so the sender's Meshtastic name will appear as the Discord username.
+         */
+        "use_webhooks": true,
+
+        // Array of Meshtastic channels handled by the bot
+        "channels": [
+          {
+            // Meshtastic channel name
+            "mesh_channel_name": "MediumFast",
+            // Discord channel ID
+            "discord_channel_id": 1348600000000000000,
+            /* Optional Discord WebHook address used for sending messages.
+               The bot can automatically create a WebHook if webhook support is enabled.
+             */
+            "discord_webhook_url": "https://discord.com/api/webhooks/aaa/bbb"
+          }
+        ],
+
+        // Configuration of private messages directed to Meshtastic Client
+        "dm": {
+          // Whether private messages should be forwarded to the Discord channel
+          "forward_to_discord": true,
+          "discord_channel_id": 1348600000000000000,
+          // Optional, can be automatically created.
+          "discord_webhook_url": "https://discord.com/api/webhooks/aaa/bbb"
+        },
+      },
+    },
+  ],
+
+  // Optionally, the bot's logs can be forwarded to an additional handler
+  "log_handler": {
+    "enable": false,
+    // Currently, only the DatagramHandler that sends logs to a UDP port is supported.
+    "handler_type": "udp",
+    "target_host": "127.0.0.1",
+    "target_port": 21337,
+  },
+
+  /* Configuration of the logger_server.py, which receives logs via UDP
+     and sends them to Discord through a WebHook.
+   */
+  "logger_server": {
+    "listen_address": "127.0.0.1",
+    "listen_port": 21337,
+    /* Required. The logger does not use a Discord connection and cannot
+       create a WebHook. It only collects logs received via UDP and periodically
+       sends them over HTTP to the webhook.
+     */
+    "discord_webhook_url": "https://discord.com/api/webhooks/aaa/bbb"
+  }
+}
